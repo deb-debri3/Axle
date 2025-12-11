@@ -1,18 +1,15 @@
 # 🔧 Axle.nvim - Keymap Browser Plugin
 
-A clean, organized Neovim plugin to browse, search, and manage your keymaps with a beautiful 3-column interface.
+A clean Neovim plugin to browse, search, and manage your keymaps with a beautiful 3-column interface.
 
 ![Axle Demo](https://img.shields.io/badge/Neovim-0.8%2B-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## ✨ Features
 
-- **📋 3-Column Layout**: Clean MODE │ KEYMAPS │ DESCRIPTION format
 - **🎯 Config-Only Scanning**: Only scans keymaps from `config/keymaps.lua` (no runtime clutter)
 - **🔍 Telescope Integration**: Fuzzy search through keymaps with live filtering
 - **➕ Manual Keymap Addition**: Add shortcuts you know with interactive prompts
-- **⚠️ Duplicate Detection**: Prevents duplicate keymaps and shows conflicts
-- **💾 Persistence**: Save and load your manual keymaps automatically
 
 ## 📦 Installation
 
@@ -54,12 +51,8 @@ Plug 'deb-debri3/Axle'
 
 | Key | Description |
 |-----|-------------|
-| `<leader>mb` | 🔍 Open keymap browser with search |
-| `<leader>mbs` | ⚡ Quick keymap search (input prompt) |
 | `<leader>mba` | ➕ Add keymap manually (interactive) |
-| `<leader>mbd` | ⚠️ Show duplicate keymaps |
-| `<leader>mbS` | 💾 Save manual keymaps to file |
-| `<leader>mbL` | 📂 Load manual keymaps from file |
+| `<leader>mbl` | 📂 Load manual keymaps from file |
 | `<leader>mbr` | 🔄 Reload plugin (development) |
 
 ### Display Format
@@ -76,13 +69,6 @@ Plug 'deb-debri3/Axle'
 │ N      │ <C-g>                          │ Grep text in project                                     │
 ═══════════════════════════════════════════════════════════════════════════════════════════════════
 ```
-
-### Telescope Interface
-
-**Special Keys in Search:**
-- `<Enter>` - Show keymap details
-- `<C-g>` - Jump to keymap definition in config file
-- `<C-a>` - Add current search term as new keymap
 
 ## 🛠️ Configuration
 
@@ -122,13 +108,6 @@ Manual keymaps are automatically saved and loaded on startup.
 
 ## ⚠️ Duplicate Prevention
 
-Axle prevents duplicate keymaps with:
-
-- **✅ Real-time validation** - Warns when adding existing keymaps
-- **🔍 Duplicate detection** - Use `<leader>mbd` to find conflicts  
-- **🔄 Smart overwrite** - Option to overwrite existing manual keymaps
-- **📂 Load filtering** - Automatically filters duplicates when loading saved keymaps
-
 When you try to add a keymap that already exists, Axle will:
 1. Show a warning with the existing keymap details
 2. Offer to overwrite (for manual keymaps only)  
@@ -141,11 +120,22 @@ When you try to add a keymap that already exists, Axle will:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome!  
+If you’d like to improve Axle, feel free to open a Pull Request.
+
+For major changes or questions or improvement, you can contact me at:  
+📧 **debrajkhadka0859@gmail.com**
+
+Please make sure your contributions follow the project's style and remain compatible with the GPLv3 license.
+
+---
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the **GNU General Public License v3.0 (GPLv3)**.  
+See the [LICENSE](LICENSE) file for full details.
+
+You are free to use, modify, and distribute this project, as long as any derivative works remain **open source under the same license**.
 
 ## 🙏 Acknowledgments
 
