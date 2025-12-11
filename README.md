@@ -55,20 +55,6 @@ Plug 'deb-debri3/Axle'
 | `<leader>mbl` | 📂 Load manual keymaps from file |
 | `<leader>mbr` | 🔄 Reload plugin (development) |
 
-### Display Format
-
-```
-═══════════════════════════════════════════════════════════════════════════════════════════════════
-║                                    🔧 AXLE - KEYMAP BROWSER (20 total)                           ║
-═══════════════════════════════════════════════════════════════════════════════════════════════════
-│ MODE   │ KEYMAPS                        │ DESCRIPTION                                              │
-────────────────────────────────────────────────────────────────────────────────────────────────────
-│ N      │ <C-p>                          │ Fuzzy find files                                         │
-│ N      │ <leader>bb                     │ Buffers                                                  │
-│ I      │ jk                             │ Exit insert mode                                         │
-│ N      │ <C-g>                          │ Grep text in project                                     │
-═══════════════════════════════════════════════════════════════════════════════════════════════════
-```
 
 ## 🛠️ Configuration
 
