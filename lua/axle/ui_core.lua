@@ -93,10 +93,20 @@ function M.show()
   local keymap_entries = {}
   
   for _, km in ipairs(file_keymaps) do
-    local display = string.format("%-4s │ %-25s │ %s", 
-      km.mode:upper(), 
-      km.key, 
-      km.description
+    local mode = km.mode:upper()
+    local key = km.key
+    local desc = km.description
+    
+    -- Truncate if too long
+    if #key > 30 then
+      key = key:sub(1, 27) .. "..."
+    end
+    if #desc > 54 then
+      desc = desc:sub(1, 51) .. "..."
+    end
+    
+    local display = string.format("│ %-6s │ %-30s │ %-54s │", 
+      mode, key, desc
     )
     table.insert(keymap_entries, {
       display = display,
@@ -104,14 +114,29 @@ function M.show()
     })
   end
   
-  -- Add header entry to show in the results
+  -- Add header entries to show in the results
   table.insert(keymap_entries, 1, {
-    display = "🔧 AXLE - KEYMAP BROWSER (" .. #file_keymaps .. " keymaps) │ MODE │ KEYMAPS │ DESCRIPTION",
-    keymap = { mode = "header", key = "", description = "", source = "header" },
+    display = string.rep("═", 100),
+    keymap = { mode = "border", key = "", description = "", source = "border" },
     is_header = true
   })
   table.insert(keymap_entries, 2, {
-    display = string.rep("─", 85),
+    display = "║                                    🔧 AXLE - KEYMAP BROWSER (" .. #file_keymaps .. " total)                           ║",
+    keymap = { mode = "title", key = "", description = "", source = "title" },
+    is_header = true
+  })
+  table.insert(keymap_entries, 3, {
+    display = string.rep("═", 100),
+    keymap = { mode = "border", key = "", description = "", source = "border" },
+    is_header = true
+  })
+  table.insert(keymap_entries, 4, {
+    display = "│ MODE   │ KEYMAPS                        │ DESCRIPTION                                              │",
+    keymap = { mode = "header", key = "", description = "", source = "header" },
+    is_header = true
+  })
+  table.insert(keymap_entries, 5, {
+    display = string.rep("─", 100),
     keymap = { mode = "separator", key = "", description = "", source = "separator" },
     is_header = true
   })
@@ -210,33 +235,44 @@ function M.show_simple()
   local lines = {}
   local width = 100
   
-  table.insert(lines, string.rep("═", width))
-  table.insert(lines, "║" .. string.format("%98s", "🔧 AXLE - KEYMAP BROWSER (" .. #file_keymaps .. " total)") .. "║")
+  -- Top border
   table.insert(lines, string.rep("═", width))
   
-  -- 3-column header: Mode | Keymaps | Description
-  table.insert(lines, string.format("│ %-6s │ %-30s │ %-56s │", "MODE", "KEYMAPS", "DESCRIPTION"))
+  -- Title centered
+  local title = "🔧 AXLE - KEYMAP BROWSER (" .. #file_keymaps .. " total)"
+  local padding = math.floor((width - 2 - #title) / 2)
+  table.insert(lines, "║" .. string.rep(" ", padding) .. title .. string.rep(" ", width - 2 - padding - #title) .. "║")
+  
+  -- Middle border
+  table.insert(lines, string.rep("═", width))
+  
+  -- Column headers with exact spacing
+  table.insert(lines, "│ MODE   │ KEYMAPS                        │ DESCRIPTION                                              │")
+  
+  -- Header separator
   table.insert(lines, string.rep("─", width))
   
   -- Display all keymaps in 3-column format
   for _, km in ipairs(file_keymaps) do
-    local truncated_desc = km.description
-    if #truncated_desc > 56 then
-      truncated_desc = truncated_desc:sub(1, 53) .. "..."
+    local mode = km.mode:upper()
+    local key = km.key
+    local desc = km.description
+    
+    -- Truncate if too long
+    if #key > 30 then
+      key = key:sub(1, 27) .. "..."
+    end
+    if #desc > 54 then
+      desc = desc:sub(1, 51) .. "..."
     end
     
-    local truncated_key = km.key
-    if #truncated_key > 30 then
-      truncated_key = truncated_key:sub(1, 27) .. "..."
-    end
-    
-    table.insert(lines, string.format("│ %-6s │ %-30s │ %-56s │", 
-      km.mode:upper(), 
-      truncated_key, 
-      truncated_desc
+    -- Format with exact column widths: MODE (6), KEYMAPS (32), DESCRIPTION (56)
+    table.insert(lines, string.format("│ %-6s │ %-30s │ %-54s │", 
+      mode, key, desc
     ))
   end
   
+  -- Bottom border
   table.insert(lines, string.rep("═", width))
   table.insert(lines, "")
   table.insert(lines, "Press 'q' to close | <leader>mb search | <leader>mba add | <leader>mbd duplicates")
