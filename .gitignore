@@ -1,0 +1,19 @@
+# Neovim
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Manual keymaps (user-specific)
+manual_keymaps.lua
