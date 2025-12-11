@@ -20,7 +20,7 @@ A clean, organized Neovim plugin to browse, search, and manage your keymaps with
 
 ```lua
 {
-  "deb-debri3/axle.nvim",
+  "deb-debri3/Axle",
   dependencies = { "nvim-telescope/telescope.nvim" },
   config = function()
     -- Plugin loads automatically
@@ -33,7 +33,7 @@ A clean, organized Neovim plugin to browse, search, and manage your keymaps with
 
 ```lua
 use {
-  "deb-debri3/axle.nvim",
+  "deb-debri3/Axle",
   requires = { "nvim-telescope/telescope.nvim" },
   config = function()
     require('axle')
@@ -45,7 +45,7 @@ use {
 
 ```vim
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'deb-debri3/axle.nvim'
+Plug 'deb-debri3/Axle'
 ```
 
 ## 🚀 Usage

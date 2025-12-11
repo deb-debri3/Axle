@@ -6,7 +6,7 @@ Add this to your `lua/plugins/` directory or in your plugin config:
 
 ```lua
 {
-  "deb-debri3/axle.nvim",
+  "deb-debri3/Axle",
   dependencies = { "nvim-telescope/telescope.nvim" },
   config = function()
     -- Plugin auto-loads with default settings
@@ -19,7 +19,7 @@ Add this to your `lua/plugins/` directory or in your plugin config:
 
 ```lua
 {
-  "deb-debri3/axle.nvim",
+  "deb-debri3/Axle",
   dependencies = { "nvim-telescope/telescope.nvim" },
   config = function()
     require('axle').setup({
