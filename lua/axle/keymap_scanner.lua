@@ -15,9 +15,17 @@ function M.scan_keymaps_file()
   local lines = vim.fn.readfile(keymaps_file)
   
   for i, line in ipairs(lines) do
+    -- Skip commented lines
+    local trimmed = line:match("^%s*(.-)%s*$") -- trim whitespace
+    if trimmed:match("^%-%-") then
+      -- print("Skipping commented line " .. i .. ": " .. line) -- debug
+      goto continue
+    end
+    
     -- Match vim.keymap.set patterns
     local mode, key, desc = line:match('keymap%.set%("([^"]+)",%s*"([^"]+)".-desc%s*=%s*"([^"]+)"')
     if mode and key and desc then
+      -- print("Found keymap: " .. mode .. " " .. key .. " " .. desc .. " on line " .. i) -- debug
       table.insert(keymaps, {
         mode = mode,
         key = key,
@@ -84,6 +92,8 @@ function M.scan_keymaps_file()
         source = "keymaps.lua"
       })
     end
+    
+    ::continue::
   end
   
   return keymaps

@@ -55,6 +55,19 @@ Plug 'deb-debri3/Axle'
 | `<leader>mbl` | 📂 Load manual keymaps from file |
 | `<leader>mbr` | 🔄 Reload plugin (development) |
 
+### 📝 Excluding Keymaps from Scanning
+
+To exclude specific keymaps from being scanned by Axle, simply **comment them out** with `--` at the beginning of the line:
+
+```lua
+-- This keymap will NOT appear in Axle
+-- keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+
+-- This keymap WILL appear in Axle  
+keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "Live grep" })
+```
+
+**Note:** After commenting/uncommenting keymaps, use `<leader>mbr` to reload and rescan your configuration.
 
 ## 🛠️ Configuration
 
@@ -80,6 +93,23 @@ Axle works out of the box with no configuration needed. It automatically:
   end,
 }
 ```
+
+### 💾 Manual Keymap Storage
+
+Manual keymaps added with `<leader>mba` are stored in:
+
+```
+~/.local/share/nvim/axle/manual_keymaps.lua
+```
+
+**Storage Workflow:**
+- `<leader>mba` → Add keymap → **Stored in memory** (temporary)
+- `<leader>mbS` → Save keymaps → **Stored to file** (persistent) 
+- `<leader>mbL` → Load keymaps → **Load from file + browse**
+
+**File follows XDG standards:**
+- `~/.config/nvim/` - Configuration files (init.lua, keymaps.lua)
+- `~/.local/share/nvim/` - User data files (manual keymaps, plugin data)
 
 ## 🎯 Manual Keymaps
 
