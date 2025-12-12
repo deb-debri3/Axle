@@ -38,6 +38,6 @@ Add this to your `lua/plugins/` directory or in your plugin config:
 - `<leader>mb` - Browse all keymaps
 - `<leader>mba` - Add new keymap
 - `<leader>mbs` - Quick search
-- `<leader>mbd` - Show duplicates
+
 
 That's it! 🎉

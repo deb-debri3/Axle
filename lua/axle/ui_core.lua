@@ -438,48 +438,6 @@ function M.load_manual_keymaps()
 	end
 end
 
--- Function to show all duplicate keymaps
-function M.show_duplicates()
-	local file_keymaps = scanner.scan_keymaps_file()
-	local all_keymaps = {}
-	local duplicates = {}
 
-	-- Add file keymaps to check list
-	for _, km in ipairs(file_keymaps) do
-		local key_id = km.mode .. ":" .. km.key
-		if all_keymaps[key_id] then
-			table.insert(duplicates, { km, all_keymaps[key_id] })
-		else
-			all_keymaps[key_id] = km
-		end
-	end
-
-	-- Check manual keymaps against config
-	for _, km in ipairs(M.manual_keymaps) do
-		local key_id = km.mode .. ":" .. km.key
-		if all_keymaps[key_id] then
-			table.insert(duplicates, { km, all_keymaps[key_id] })
-		end
-	end
-
-	if #duplicates == 0 then
-		vim.notify("✓ No duplicate keymaps found!", vim.log.levels.INFO, { title = "Axle" })
-		return
-	end
-
-	local lines = {}
-	table.insert(lines, "⚠️  DUPLICATE KEYMAPS DETECTED:")
-	table.insert(lines, "")
-
-	for _, dup_pair in ipairs(duplicates) do
-		local km1, km2 = dup_pair[1], dup_pair[2]
-		table.insert(lines, string.format("[%s] %s:", km1.mode:upper(), km1.key))
-		table.insert(lines, string.format("  • %s (%s)", km1.description, km1.source))
-		table.insert(lines, string.format("  • %s (%s)", km2.description, km2.source))
-		table.insert(lines, "")
-	end
-
-	vim.notify(table.concat(lines, "\n"), vim.log.levels.WARN, { title = "Axle - Duplicates" })
-end
 
 return M

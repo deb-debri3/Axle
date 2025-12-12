@@ -55,12 +55,12 @@ Plug 'deb-debri3/Axle'
 | `<leader>mba` | ➕ Add keymap manually (interactive) |
 | `<leader>mbS` | 💾 Save manual keymaps to file |
 | `<leader>mbl` | 📂 Load manual keymaps from file + browse |
-| `<leader>mbd` | 🔍 Show duplicate keymaps |
+
 | `<leader>mbr` | 🔄 Reload plugin (development) |
 
 ### 📝 Excluding Keymaps from Scanning
 
-To exclude specific keymaps from being scanned by Axle, simply **comment them out** with `--` at the beginning of the line:
+To exclude specific keymaps from being scanned by Axle, simply **comment them out** with `--` at the beginning of the line, meaning multi line comment won't work properly:
 
 ```lua
 -- This keymap will NOT appear in Axle
@@ -146,13 +146,6 @@ Add keymaps you know but aren't in your config:
 4. Enter description
 
 Manual keymaps are automatically saved and loaded on startup.
-
-## ⚠️ Duplicate Prevention
-
-When you try to add a keymap that already exists, Axle will:
-1. Show a warning with the existing keymap details
-2. Offer to overwrite (for manual keymaps only)  
-3. Prevent the duplicate from being added
 
 ## 📋 Requirements
 

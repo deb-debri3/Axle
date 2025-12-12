@@ -35,8 +35,7 @@ function M.setup(opts)
     km_ui.show()
   end, { desc = "Axle: Load keymaps" })
   
-  -- Check for duplicates
-  vim.keymap.set("n", "<leader>mbd", km_ui.show_duplicates, { desc = "Axle: Show duplicates" })
+
   
   -- Reload keymaps (useful for development)
   vim.keymap.set("n", "<leader>mbr", function()
