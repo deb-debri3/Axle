@@ -38,13 +38,6 @@ use {
 }
 ```
 
-### Using [vim-plug](https://github.com/junegunn/vim-plug)
-
-```vim
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'deb-debri3/Axle'
-```
-
 ## 🚀 Usage
 
 ### Keymaps
@@ -55,12 +48,11 @@ Plug 'deb-debri3/Axle'
 | `<leader>mba` | ➕ Add keymap manually (interactive) |
 | `<leader>mbS` | 💾 Save manual keymaps to file |
 | `<leader>mbl` | 📂 Load manual keymaps from file + browse |
-
 | `<leader>mbr` | 🔄 Reload plugin (development) |
 
 ### 📝 Excluding Keymaps from Scanning
 
-To exclude specific keymaps from being scanned by Axle, simply **comment them out** with `--` at the beginning of the line, meaning multi line comment won't work properly:
+To exclude specific keymaps from being scanned by Axle, simply comment them out by adding -- at the beginning of the line. Note that multi-line comments will not work properly.
 
 ```lua
 -- This keymap will NOT appear in Axle
@@ -80,22 +72,6 @@ Axle works out of the box with no configuration needed. It automatically:
 - Sets up all keymaps with `<leader>mb` prefix
 - Loads any previously saved manual keymaps
 
-### Custom Configuration
-
-```lua
-{
-  "deb-debri3/axle.nvim",
-  dependencies = { "nvim-telescope/telescope.nvim" },
-  config = function()
-    local axle = require('axle')
-    
-    -- Add some manual keymaps (optional)
-    local ui = require('axle.ui_core')
-    ui.add_keymap("n", "<leader>custom", "My custom keymap")
-    ui.add_keymap("i", "<C-x>", "Custom insert mode keymap")
-  end,
-}
-```
 
 ### 💾 Manual Keymap Storage
 
@@ -118,23 +94,6 @@ Manual keymaps added with `<leader>mba` are stored in:
 - `~/.config/nvim/` - Configuration files (init.lua, keymaps.lua)
 - `~/.local/share/nvim/` - User data files (manual keymaps, plugin data)
 
-### 🔗 Version Control Integration
-
-If you want to version control your manual keymaps across machines, create a symlink:
-
-```bash
-# Move file to your dotfiles/nvim config
-mv ~/.local/share/nvim/axle/manual_keymaps.lua ~/.config/nvim/manual_keymaps.lua
-
-# Create symlink back to original location
-mkdir -p ~/.local/share/nvim/axle
-ln -s ~/.config/nvim/manual_keymaps.lua ~/.local/share/nvim/axle/manual_keymaps.lua
-```
-
-This allows you to:
-- Keep manual keymaps in your git-tracked nvim config
-- Share keymaps across different machines
-- Backup manual keymaps with your dotfiles
 
 ## 🎯 Manual Keymaps
 
