@@ -14,7 +14,7 @@ function M.setup(opts)
     km_ui.add_keymap("n", "<leader>tt", "Open Terminal")
   end
   
-  -- Removed: Main browse keymap (use <leader>mbL to load and browse)
+  -- Removed: Main browse keymap (use <leader>mbl to load and browse)
   
   -- Quick search keymap
   vim.keymap.set("n", "<leader>mbs", function()
@@ -30,7 +30,10 @@ function M.setup(opts)
   
   -- Save/Load manual keymaps
   vim.keymap.set("n", "<leader>mbS", km_ui.save_manual_keymaps, { desc = "Axle: Save keymaps" })
-  vim.keymap.set("n", "<leader>mbL", km_ui.load_manual_keymaps, { desc = "Axle: Load keymaps" })
+  vim.keymap.set("n", "<leader>mbl", function()
+    km_ui.load_manual_keymaps()
+    km_ui.show()
+  end, { desc = "Axle: Load keymaps" })
   
   -- Check for duplicates
   vim.keymap.set("n", "<leader>mbd", km_ui.show_duplicates, { desc = "Axle: Show duplicates" })

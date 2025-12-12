@@ -51,8 +51,11 @@ Plug 'deb-debri3/Axle'
 
 | Key | Description |
 |-----|-------------|
+| `<leader>mbs` | 🔍 Quick search keymaps |
 | `<leader>mba` | ➕ Add keymap manually (interactive) |
-| `<leader>mbl` | 📂 Load manual keymaps from file |
+| `<leader>mbS` | 💾 Save manual keymaps to file |
+| `<leader>mbl` | 📂 Load manual keymaps from file + browse |
+| `<leader>mbd` | 🔍 Show duplicate keymaps |
 | `<leader>mbr` | 🔄 Reload plugin (development) |
 
 ### 📝 Excluding Keymaps from Scanning
@@ -105,11 +108,33 @@ Manual keymaps added with `<leader>mba` are stored in:
 **Storage Workflow:**
 - `<leader>mba` → Add keymap → **Stored in memory** (temporary)
 - `<leader>mbS` → Save keymaps → **Stored to file** (persistent) 
-- `<leader>mbL` → Load keymaps → **Load from file + browse**
+- `<leader>mbl` → Load keymaps → **Load from file + browse**
+
+**Source Labels:**
+- **manual** - Keymaps added via `<leader>mba` or loaded from manual_keymaps.lua
+- **default** - Keymaps scanned from your config files (keymaps.lua, runtime)
 
 **File follows XDG standards:**
 - `~/.config/nvim/` - Configuration files (init.lua, keymaps.lua)
 - `~/.local/share/nvim/` - User data files (manual keymaps, plugin data)
+
+### 🔗 Version Control Integration
+
+If you want to version control your manual keymaps across machines, create a symlink:
+
+```bash
+# Move file to your dotfiles/nvim config
+mv ~/.local/share/nvim/axle/manual_keymaps.lua ~/.config/nvim/manual_keymaps.lua
+
+# Create symlink back to original location
+mkdir -p ~/.local/share/nvim/axle
+ln -s ~/.config/nvim/manual_keymaps.lua ~/.local/share/nvim/axle/manual_keymaps.lua
+```
+
+This allows you to:
+- Keep manual keymaps in your git-tracked nvim config
+- Share keymaps across different machines
+- Backup manual keymaps with your dotfiles
 
 ## 🎯 Manual Keymaps
 

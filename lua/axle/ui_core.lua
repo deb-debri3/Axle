@@ -99,7 +99,7 @@ function M.show()
 		local key = km.key
 		local desc = km.description
 
-		local source = km.source == "manual" and "manual" or "autoscan"
+		local source = km.source == "manual" and "manual" or "default"
 		local display = string.format("%-6s %-30s %-40s %s", mode, key, desc, source)
 		table.insert(keymap_entries, {
 			display = display,
@@ -230,7 +230,7 @@ function M.show_simple()
 		end
 
 		-- Simple format without borders
-		local source = km.source == "manual" and "manual" or "autoscan"
+		local source = km.source == "manual" and "manual" or "default"
 		table.insert(lines, string.format("%-6s %-30s %-40s %s", mode, key, desc, source))
 	end
 
@@ -416,6 +416,7 @@ function M.load_manual_keymaps()
 			for _, km in ipairs(saved_keymaps) do
 				local exists, source, existing_desc = M.keymap_exists(km.mode, km.key)
 				if not exists then
+					km.source = "manual"  -- Ensure loaded keymaps are marked as manual
 					table.insert(valid_keymaps, km)
 				else
 					table.insert(conflicts, { km, source, existing_desc })
