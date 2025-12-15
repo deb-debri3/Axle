@@ -7,7 +7,7 @@ A clean Neovim plugin to browse, search, and manage your keymaps with a beautifu
 
 ## ✨ Features
 
-- **🎯 Config-Only Scanning**: Only scans keymaps from `config/keymaps.lua` (no runtime clutter)
+- **🎯 Smart Keymap Scanning**: Automatically finds keymaps in common locations or custom paths
 - **🔍 Telescope Integration**: Fuzzy search through keymaps with live filtering
 - **➕ Manual Keymap Addition**: Add shortcuts you know with interactive prompts
 
@@ -68,9 +68,42 @@ keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "Live grep" })
 
 Axle works out of the box with no configuration needed. It automatically:
 
-- Scans your `lua/config/keymaps.lua` file
+- Scans common keymap file locations (see below)
 - Sets up all keymaps with `<leader>mb` prefix
 - Loads any previously saved manual keymaps
+
+### 📁 Keymap File Detection
+
+Axle automatically scans these common locations for keymap files:
+
+- `lua/config/keymaps.lua` (LazyVim style)
+- `lua/keymaps.lua` (common convention)
+- `lua/core/keymaps.lua` (NvChad style)
+- `lua/mappings.lua`
+- `lua/keys.lua`
+- `init.lua` (main config file)
+
+### 🎛️ Custom Configuration
+
+You can specify custom keymap file paths:
+
+```lua
+{
+  "deb-debri3/Axle",
+  dependencies = { "nvim-telescope/telescope.nvim" },
+  config = function()
+    require('axle').setup({
+      keymap_paths = {
+        "lua/my-keymaps.lua",           -- Relative to config dir
+        "lua/custom/mappings.lua",      -- Multiple files supported
+        "/absolute/path/to/keys.lua"    -- Absolute paths also work
+      }
+    })
+  end,
+}
+```
+
+**Note:** If `keymap_paths` is provided, only those files will be scanned (default locations are ignored).
 
 
 ### 💾 Manual Keymap Storage

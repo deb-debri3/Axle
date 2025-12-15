@@ -147,9 +147,35 @@ function M.show()
 					local selection = action_state.get_selected_entry()
 					if selection and not selection.value.is_header and selection.value.keymap.line_number then
 						actions.close(prompt_bufnr)
-						local keymaps_file = vim.fn.stdpath("config") .. "/lua/config/keymaps.lua"
-						vim.cmd("edit " .. keymaps_file)
-						vim.api.nvim_win_set_cursor(0, { selection.value.keymap.line_number, 0 })
+						
+						-- Find the correct keymap file based on source
+						local config_path = vim.fn.stdpath("config")
+						local possible_paths = {
+							config_path .. "/lua/config/keymaps.lua",
+							config_path .. "/lua/keymaps.lua", 
+							config_path .. "/lua/core/keymaps.lua",
+							config_path .. "/lua/mappings.lua",
+							config_path .. "/lua/keys.lua",
+							config_path .. "/init.lua"
+						}
+						
+						local target_file = nil
+						local source_filename = selection.value.keymap.source:match("([^%(]+)") -- Remove any parenthetical info
+						
+						for _, path in ipairs(possible_paths) do
+							local filename = path:match("([^/]+)$")
+							if filename == source_filename and vim.fn.filereadable(path) == 1 then
+								target_file = path
+								break
+							end
+						end
+						
+						if target_file then
+							vim.cmd("edit " .. target_file)
+							vim.api.nvim_win_set_cursor(0, { selection.value.keymap.line_number, 0 })
+						else
+							vim.notify("Could not find keymap file: " .. source_filename, vim.log.levels.WARN)
+						end
 					end
 				end)
 

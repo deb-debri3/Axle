@@ -1,7 +1,7 @@
 # Axle User Manual
 
 ## Overview
-Axle is a Neovim plugin that provides a clean, organized way to browse, search, and manage your keymaps. It automatically scans your configuration and allows you to add custom keymaps with built-in duplicate detection.
+Axle is a Neovim plugin that provides a clean, organized way to browse, search, and manage your keymaps. It automatically scans your keymap files from multiple common locations and allows you to add custom keymaps with built-in duplicate detection.
 
 ## Quick Start
 
@@ -15,6 +15,33 @@ Add to your plugin manager (lazy.nvim example):
   end
 }
 ```
+
+### Configuration
+
+#### Default Behavior
+Axle works out of the box and automatically scans these common keymap file locations:
+- `lua/config/keymaps.lua` (LazyVim style)
+- `lua/keymaps.lua` (common convention)
+- `lua/core/keymaps.lua` (NvChad style)
+- `lua/mappings.lua`
+- `lua/keys.lua`
+- `init.lua`
+
+#### Custom Keymap Paths
+If your keymaps are in different locations, specify custom paths:
+
+```lua
+require("axle").setup({
+  keymap_paths = {
+    "lua/my-keymaps.lua",           -- Relative to config directory
+    "lua/custom/mappings.lua",      -- Multiple files supported
+    "/absolute/path/to/keys.lua"    -- Absolute paths also work
+  },
+  add_examples = true               -- Add example keymaps for testing
+})
+```
+
+**Note:** When `keymap_paths` is specified, only those files are scanned (default locations are ignored).
 
 ### Basic Usage
 - **Browse keymaps**: `<leader>mbl` - Load and browse all keymaps

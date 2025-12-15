@@ -8,6 +8,12 @@ local km_ui = require("axle.ui_core")
 function M.setup(opts)
   opts = opts or {}
   
+  -- Store custom keymap paths if provided
+  if opts.keymap_paths then
+    local scanner = require("axle.keymap_scanner")
+    scanner.set_custom_paths(opts.keymap_paths)
+  end
+  
   -- Add some example manual keymaps if requested
   if opts.add_examples then
     km_ui.add_keymap("n", "<leader>bb", "Buffers")
