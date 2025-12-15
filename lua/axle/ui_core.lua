@@ -72,7 +72,10 @@ function M.show()
 	-- Get only keymaps from config file (not runtime)
 	local file_keymaps = scanner.scan_keymaps_file()
 
-	-- Add manual keymaps
+	-- Add manual keymaps (both in-memory and from saved file)
+	-- First, ensure we load saved manual keymaps
+	M.load_manual_keymaps()
+	
 	for _, km in ipairs(M.manual_keymaps) do
 		table.insert(file_keymaps, km)
 	end

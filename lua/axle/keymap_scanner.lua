@@ -52,6 +52,9 @@ function M.scan_keymaps_file()
     return keymaps
   end
   
+  -- Track seen keymaps to prevent duplicates
+  local seen_keymaps = {}
+  
   -- Process all found keymap files
   for _, keymaps_file in ipairs(found_files) do
     local lines = vim.fn.readfile(keymaps_file)
@@ -65,75 +68,85 @@ function M.scan_keymaps_file()
         goto continue
       end
       
-      -- Match vim.keymap.set patterns
+      local found_keymap = nil
+      
+      -- Match vim.keymap.set patterns with desc
       local mode, key, desc = line:match('keymap%.set%("([^"]+)",%s*"([^"]+)".-desc%s*=%s*"([^"]+)"')
       if mode and key and desc then
-        -- print("Found keymap: " .. mode .. " " .. key .. " " .. desc .. " on line " .. i) -- debug
-        table.insert(keymaps, {
+        found_keymap = {
           mode = mode,
           key = key,
           description = desc,
           line_number = i,
           source = filename
-        })
-      end
-      
-      -- Match telescope_maps table entries
-      local tel_key, tel_desc = line:match('%["([^"]+)"%]%s*=%s*{.-"([^"]+)"')
-      if tel_key and tel_desc then
-        table.insert(keymaps, {
-          mode = "n",
-          key = tel_key,
-          description = tel_desc,
-          line_number = i,
-          source = filename .. " (telescope_maps)"
-        })
-      end
-      
-      -- Match function-based keymaps
-      local func_mode, func_key = line:match('keymap%.set%("([^"]+)",%s*"([^"]+)",%s*function%(%)') 
-      if func_mode and func_key then
-        -- Look for desc in the same line or next few lines
-        local func_desc = "Custom function"
-        local desc_match = line:match('desc%s*=%s*"([^"]+)"')
-        if desc_match then
-          func_desc = desc_match
+        }
+      else
+        -- Match telescope_maps table entries
+        local tel_key, tel_desc = line:match('%["([^"]+)"%]%s*=%s*{.-"([^"]+)"')
+        if tel_key and tel_desc then
+          found_keymap = {
+            mode = "n",
+            key = tel_key,
+            description = tel_desc,
+            line_number = i,
+            source = filename .. " (telescope_maps)"
+          }
         else
-          -- Check next few lines for desc
-          for j = i+1, math.min(i+3, #lines) do
-            local next_desc = lines[j]:match('desc%s*=%s*"([^"]+)"')
-            if next_desc then
-              func_desc = next_desc
-              break
+          -- Match function-based keymaps
+          local func_mode, func_key = line:match('keymap%.set%("([^"]+)",%s*"([^"]+)",%s*function%(%)') 
+          if func_mode and func_key then
+            -- Look for desc in the same line or next few lines
+            local func_desc = "Custom function"
+            local desc_match = line:match('desc%s*=%s*"([^"]+)"')
+            if desc_match then
+              func_desc = desc_match
+            else
+              -- Check next few lines for desc
+              for j = i+1, math.min(i+3, #lines) do
+                local next_desc = lines[j]:match('desc%s*=%s*"([^"]+)"')
+                if next_desc then
+                  func_desc = next_desc
+                  break
+                end
+              end
+            end
+            
+            found_keymap = {
+              mode = func_mode,
+              key = func_key,
+              description = func_desc,
+              line_number = i,
+              source = filename
+            }
+          else
+            -- Match command-style keymaps like ":NvimTreeToggle<CR>"
+            local cmd_mode, cmd_key, cmd_command = line:match('keymap%.set%("([^"]+)",%s*"([^"]+)",%s*"([^"]*)"')
+            if cmd_mode and cmd_key and cmd_command and cmd_command:match("^:") then
+              -- Look for desc in same line
+              local cmd_desc = line:match('desc%s*=%s*"([^"]+)"')
+              if not cmd_desc then
+                cmd_desc = "Command: " .. cmd_command:gsub("^:", ""):gsub("<CR>$", "")
+              end
+              
+              found_keymap = {
+                mode = cmd_mode,
+                key = cmd_key,
+                description = cmd_desc,
+                line_number = i,
+                source = filename
+              }
             end
           end
         end
-        
-        table.insert(keymaps, {
-          mode = func_mode,
-          key = func_key,
-          description = func_desc,
-          line_number = i,
-          source = filename
-        })
       end
       
-      -- Match command-style keymaps like ":NvimTreeToggle<CR>"
-      local cmd_mode, cmd_key, cmd_command = line:match('keymap%.set%("([^"]+)",%s*"([^"]+)",%s*"([^"]*)"')
-      if cmd_mode and cmd_key and cmd_command and cmd_command:match("^:") then
-        -- Look for desc in same line
-        local cmd_desc = line:match('desc%s*=%s*"([^"]+)"')
-        if not cmd_desc then
-          cmd_desc = "Command: " .. cmd_command:gsub("^:", ""):gsub("<CR>$", "")
+      -- Add keymap only if not already seen (prevent duplicates)
+      if found_keymap then
+        local keymap_id = found_keymap.mode .. ":" .. found_keymap.key
+        if not seen_keymaps[keymap_id] then
+          seen_keymaps[keymap_id] = true
+          table.insert(keymaps, found_keymap)
         end
-        
-        table.insert(keymaps, {
-          mode = cmd_mode,
-          key = cmd_key,
-          description = cmd_desc,
-          line_number = i,
-          source = filename
-        })
       end
       
       ::continue::
