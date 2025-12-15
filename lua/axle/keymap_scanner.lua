@@ -58,13 +58,13 @@ function M.scan_keymaps_file()
   -- Process all found keymap files
   for _, keymaps_file in ipairs(found_files) do
     local lines = vim.fn.readfile(keymaps_file)
-    local filename = keymaps_file:match("([^/]+)$") -- Get just the filename
+    local filename = keymaps_file:match("([^/]+)$")
   
     for i, line in ipairs(lines) do
       -- Skip commented lines
-      local trimmed = line:match("^%s*(.-)%s*$") -- trim whitespace
+      local trimmed = line:match("^%s*(.-)%s*$")
       if trimmed:match("^%-%-") then
-        -- print("Skipping commented line " .. i .. ": " .. line) -- debug
+
         goto continue
       end
       
