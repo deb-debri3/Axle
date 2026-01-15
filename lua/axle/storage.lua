@@ -293,36 +293,6 @@ function M.import_manual_keymaps(filepath)
 	return true, stats
 end
 
--- Toggle favorite status
-function M.toggle_favorite(mode, key, category)
-	local storage = M.load()
-	local toggled = false
-	
-	if category == "auto" then
-		for i, km in ipairs(storage.auto) do
-			if km.mode == mode and km.key == key then
-				storage.auto[i].favorite = not (km.favorite or false)
-				toggled = storage.auto[i].favorite
-				break
-			end
-		end
-	elseif category == "manual" then
-		for i, km in ipairs(storage.manual) do
-			if km.mode == mode and km.key == key then
-				storage.manual[i].favorite = not (km.favorite or false)
-				toggled = storage.manual[i].favorite
-				break
-			end
-		end
-	end
-	
-	if toggled ~= false then
-		M.save(storage)
-	end
-	
-	return toggled
-end
-
 -- Migrate from old persistence system
 function M.migrate_from_old_system()
 	local data_dir = vim.fn.stdpath("data")

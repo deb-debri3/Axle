@@ -85,13 +85,9 @@ function M.show()
 		local key = km.key
 		local desc = km.description
 		local category = km.category or "auto"
-		
-		-- Add favorite indicator
-		local favorite_icon = (km.favorite and "⭐ ") or "   "
 
 		local display = string.format(
-			"%s%-6s %-30s %-40s [%s]",
-			favorite_icon,
+			"%-6s %-30s %-40s [%s]",
 			mode,
 			key,
 			desc,
@@ -287,47 +283,6 @@ function M.show()
 								{ title = "Axle - Auto Keymap" }
 							)
 						end
-					end
-				end)
-
-				-- Add mapping to toggle favorite with <C-s> (normal mode)
-				map("n", "<C-s>", function()
-					local selection = action_state.get_selected_entry()
-					if selection and not selection.value.is_header then
-						local km = selection.value.keymap
-						
-						-- Don't allow starring unsaved keymaps
-						if km.category == "manual (unsaved)" then
-							vim.notify(
-								"Save the keymap first before starring",
-								vim.log.levels.WARN,
-								{ title = "Axle" }
-							)
-							return
-						end
-						
-						-- Toggle favorite
-						local is_favorite = storage.toggle_favorite(km.mode, km.key, km.category)
-						
-						if is_favorite then
-							vim.notify(
-								string.format("⭐ Starred: [%s] %s", km.mode:upper(), km.key),
-								vim.log.levels.INFO,
-								{ title = "Axle" }
-							)
-						else
-							vim.notify(
-								string.format("Unstarred: [%s] %s", km.mode:upper(), km.key),
-								vim.log.levels.INFO,
-								{ title = "Axle" }
-							)
-						end
-						
-						-- Refresh picker
-						actions.close(prompt_bufnr)
-						vim.schedule(function()
-							M.show()
-						end)
 					end
 				end)
 
@@ -846,41 +801,19 @@ function M.show_help()
 	local help_lines = {
 		"🔧 Axle - Keybindings Help",
 		"",
-		"MAIN COMMANDS:",
-		"  <leader>mbl  →  Browse all keymaps",
-		"  <leader>mbs  →  Quick search keymaps",
-		"  <leader>mba  →  Add manual keymap",
-		"  <leader>mbe  →  Edit manual keymap",
-		"  <leader>mbd  →  Delete manual keymap",
-		"  <leader>mbS  →  Save manual keymaps",
-		"  <leader>mbr  →  Rescan & sync (update auto)",
-		"  <leader>mbi  →  Show statistics/info",
-		"  <leader>mbx  →  Export manual keymaps",
-		"  <leader>mbm  →  Import manual keymaps",
-		"  <leader>mbh  →  Show this help",
+		"KEYBINDINGS:",
+		"  <leader>mbl  →  Browse keymaps",
+		"  <leader>mbs  →  Quick search",
+		"  <leader>mba  →  Add keymap",
+		"  <leader>mbe  →  Edit keymap",
+		"  <leader>mbd  →  Delete keymap",
+		"  <leader>mbr  →  Rescan & sync",
+		"  <leader>mbi  →  Show info",
+		"  <leader>mbh  →  Show help",
 		"",
-		"VIM COMMANDS:",
-		"  :Axle        →  Browse all keymaps",
-		"  :AxleAdd     →  Add manual keymap",
-		"  :AxleEdit    →  Edit manual keymap",
-		"  :AxleDelete  →  Delete manual keymap",
-		"  :AxleInfo    →  Show statistics",
-		"  :AxleExport  →  Export manual keymaps",
-		"  :AxleImport  →  Import manual keymaps",
-		"  :AxleSync    →  Rescan & sync",
-		"  :AxleHelp    →  Show this help",
-		"",
-		"BROWSER KEYS (in Telescope):",
-		"  <C-d>        →  Delete selected keymap",
-		"  <C-s>        →  Toggle favorite (star)",
-		"  <C-g>        →  Go to keymap definition",
-		"",
-		"TIPS:",
-		"  • Auto keymaps = From your keymaps.lua",
-		"  • Manual keymaps = Added by you",
-		"  • ⭐ = Favorite keymap",
-		"  • Press <leader>mbr after editing config",
-		"  • Use <leader>mbS to save manual keymaps",
+		"BROWSER KEYS:",
+		"  <C-d>        →  Delete keymap",
+		"  <C-g>        →  Go to definition",
 		"",
 		"Press q or <Esc> to close",
 	}
