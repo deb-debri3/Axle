@@ -286,51 +286,6 @@ function M.show()
 					end
 				end)
 
-				-- Add mapping to go to keymap definition
-				map("i", "<C-g>", function()
-					local selection = action_state.get_selected_entry()
-					if selection and not selection.value.is_header and selection.value.keymap.line_number then
-						actions.close(prompt_bufnr)
-						
-						-- Only auto keymaps have source file info
-						if selection.value.keymap.category ~= "auto" then
-							vim.notify("Manual keymaps don't have source file location", vim.log.levels.INFO)
-							return
-						end
-						
-						local config_path = vim.fn.stdpath("config")
-						local source_file = selection.value.keymap.source
-						
-						if not source_file then
-							vim.notify("Source file information not available", vim.log.levels.WARN)
-							return
-						end
-						
-						-- Construct full path
-						local possible_paths = {
-							config_path .. "/lua/config/" .. source_file,
-							config_path .. "/lua/" .. source_file, 
-							config_path .. "/lua/core/" .. source_file,
-							config_path .. "/" .. source_file
-						}
-						
-						local target_file = nil
-						for _, path in ipairs(possible_paths) do
-							if vim.fn.filereadable(path) == 1 then
-								target_file = path
-								break
-							end
-						end
-						
-						if target_file then
-							vim.cmd("edit " .. target_file)
-							vim.api.nvim_win_set_cursor(0, { selection.value.keymap.line_number, 0 })
-						else
-							vim.notify("Could not find keymap file: " .. source_file, vim.log.levels.WARN)
-						end
-					end
-				end)
-
 				-- Add mapping to add current search as manual keymap
 				map("i", "<C-a>", function()
 					local current_input = action_state.get_current_line()
@@ -813,7 +768,6 @@ function M.show_help()
 		"",
 		"BROWSER KEYS:",
 		"  <C-d>        →  Delete keymap",
-		"  <C-g>        →  Go to definition",
 		"",
 		"Press q or <Esc> to close",
 	}
