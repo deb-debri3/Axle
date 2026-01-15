@@ -853,50 +853,5 @@ function M.show_info()
 	vim.api.nvim_buf_set_keymap(buf, "n", "<Esc>", "<cmd>close<CR>", { silent = true, noremap = true })
 end
 
--- Export manual keymaps
-function M.export_manual_keymaps()
-	local file = storage.export_manual_keymaps()
-	
-	vim.notify(
-		string.format("✓ Exported manual keymaps\nFile: %s", file),
-		vim.log.levels.INFO,
-		{ title = "Axle - Export" }
-	)
-	
-	return file
-end
-
--- Import manual keymaps
-function M.import_manual_keymaps()
-	vim.ui.input({
-		prompt = "Import file path: ",
-		default = vim.fn.expand("~") .. "/axle-backup-",
-		completion = "file"
-	}, function(filepath)
-		if not filepath or filepath == "" then return end
-		
-		local success, result = storage.import_manual_keymaps(filepath)
-		
-		if success then
-			local stats = result
-			vim.notify(
-				string.format(
-					"✓ Import complete!\nImported: %d\nSkipped (duplicates): %d",
-					stats.imported,
-					stats.skipped
-				),
-				vim.log.levels.INFO,
-				{ title = "Axle - Import" }
-			)
-		else
-			vim.notify(
-				string.format("✗ Import failed: %s", result),
-				vim.log.levels.ERROR,
-				{ title = "Axle - Import Error" }
-			)
-		end
-	end)
-end
-
 
 return M

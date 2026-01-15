@@ -47,12 +47,6 @@ function M.setup(opts)
   -- Show statistics/info
   vim.keymap.set("n", "<leader>mbi", km_ui.show_info, { desc = "Axle: Show info" })
   
-  -- Export manual keymaps
-  vim.keymap.set("n", "<leader>mbx", km_ui.export_manual_keymaps, { desc = "Axle: Export manual keymaps" })
-  
-  -- Import manual keymaps
-  vim.keymap.set("n", "<leader>mbm", km_ui.import_manual_keymaps, { desc = "Axle: Import manual keymaps" })
-  
   -- Save manual keymaps
   vim.keymap.set("n", "<leader>mbS", km_ui.save_manual_keymaps, { desc = "Axle: Save manual keymaps" })
   
@@ -104,14 +98,6 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("AxleHelp", function()
     km_ui.show_help()
   end, { desc = "Axle: Show help" })
-  
-  vim.api.nvim_create_user_command("AxleExport", function()
-    km_ui.export_manual_keymaps()
-  end, { desc = "Axle: Export manual keymaps" })
-  
-  vim.api.nvim_create_user_command("AxleImport", function()
-    km_ui.import_manual_keymaps()
-  end, { desc = "Axle: Import manual keymaps" })
   
 end
 
